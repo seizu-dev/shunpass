@@ -1,0 +1,134 @@
+@import 'tailwindcss';
+
+/* design_handoff_shunpass_mobile のトークン一式（Organic デザインシステムの
+   アクセントのみライム #aaca26 に差し替えたもの）。
+   ダーク時の代替色がデザイン側に無いため prefers-color-scheme への追従は落とし、
+   クリーム地の単一テーマに固定する。color-scheme を light で固定しないと
+   <select> などのネイティブUIだけがUA既定のダーク配色になり、地の色から浮く。 */
+:root {
+  color-scheme: light;
+}
+
+/* static を付けて全トークンを :root へ出す。素のCSS（下の .bar-fade など）や
+   インラインスタイルから var(--color-*) を参照するため、
+   ユーティリティで使われた分だけ出力される既定の挙動では足りない。 */
+@theme static {
+  --color-bg: #f5ead8;
+  --color-surface: #ebddc5;
+  --color-text: #201e1d;
+  --color-title: #402310;
+  --color-divider: color-mix(in srgb, #201e1d 16%, transparent);
+
+  --color-accent: #aaca26;
+  --color-accent-100: #f6fbdf;
+  --color-accent-200: #e9f4bb;
+  --color-accent-300: #d5e88a;
+  --color-accent-400: #c0d95a;
+  --color-accent-500: #aaca26;
+  --color-accent-600: #8ba81b;
+  --color-accent-700: #6c8412;
+  --color-accent-800: #4e5f0c;
+  --color-accent-900: #333e08;
+
+  --color-accent2-100: #f0fae1;
+  --color-accent2-200: #e1eecc;
+  --color-accent2-500: #8fa073;
+  --color-accent2-600: #728157;
+  --color-accent2-800: #3d472b;
+  --color-accent2-900: #272e1b;
+
+  --color-neutral-100: #f9f4ed;
+  --color-neutral-200: #eee7db;
+  --color-neutral-300: #dcd3c4;
+  --color-neutral-400: #c0b6a5;
+  --color-neutral-500: #a19786;
+  --color-neutral-600: #82796a;
+  --color-neutral-700: #645c50;
+  --color-neutral-800: #474238;
+  --color-neutral-900: #2e2b25;
+}
+
+@theme inline {
+  --font-sans: var(--font-figtree), system-ui, sans-serif;
+  /* Caprasimo は 400 しか持たない欧文専用フォントで、日本語はフォールバックに落ちる。
+     見出しは font-weight 800 と併用して和欧の太さを揃える。 */
+  --font-heading: var(--font-caprasimo), var(--font-figtree), system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, monospace;
+}
+
+/* 下部固定バーの背景。バーの下をコンテンツが通り抜けるので、地の色へ溶かして隠す。 */
+@utility bar-fade {
+  background: linear-gradient(to top, var(--color-bg) 68%, transparent);
+}
+
+/* 40px はホームインジケータ回避の既定値。実際に safe-area を持つ端末ではそちらを優先する。 */
+@utility pb-home {
+  padding-bottom: max(40px, calc(env(safe-area-inset-bottom) + 14px));
+}
+
+/* 画面上端の余白。デザインの 60px は iOS のステータスバー領域を含んだ値で、
+   ブラウザで開くとその分そのまま過剰な余白になる。safe-area がある環境だけ足す。 */
+@utility pt-head {
+  padding-top: max(20px, calc(env(safe-area-inset-top) + 8px));
+}
+
+/* アクセントはライトな色なので、地に載せる文字は必ずアクセント900にする
+   （クリーム文字だと 1.58:1 でコントラストが足りない）。 */
+@utility on-accent {
+  background: var(--color-accent);
+  color: var(--color-accent-900);
+}
+
+/* 状態が切り替わったことを気づかせるための演出。出現時に一度弾ませてから明滅させる。
+   QRの読み取り成功と、取得の完了表示の2か所で使う。文字の差し替えだけでは
+   目線がそこに無いときに見落とすため。 */
+@keyframes flash-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  14% {
+    opacity: 1;
+    transform: scale(1.12);
+    background-color: var(--color-bg);
+  }
+  30% {
+    transform: scale(1);
+    background-color: var(--color-accent);
+  }
+  45% {
+    background-color: var(--color-bg);
+  }
+  60% {
+    background-color: var(--color-accent);
+  }
+  75% {
+    background-color: var(--color-bg);
+  }
+  100% {
+    background-color: var(--color-accent);
+  }
+}
+
+/* @utility ではなく素のクラスにしてある。バリアントを付ける予定が無いのと、
+   下の prefers-reduced-motion の打ち消しと同じレイヤーに置いて優先順を単純にするため。 */
+.flash-pop {
+  animation: flash-pop 700ms ease-out;
+}
+
+/* 明滅は動きに敏感な利用者には負担になる。文言自体は残るので演出だけ落とす。 */
+@media (prefers-reduced-motion: reduce) {
+  .flash-pop {
+    animation: none;
+  }
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
