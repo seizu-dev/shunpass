@@ -27,6 +27,9 @@ const API_ERROR_LABELS: Record<string, string> = {
   // （.claude/context/known-issues.md 参照）。
   'csrf-not-found': '旬すぐ側の仕様が変わった可能性があります（CSRFトークンを取得できません）',
   'csrf-rejected': '旬すぐ側の仕様が変わった可能性があります（CSRFトークンが拒否されました）',
+  // 旬すぐ側ではなく旬パス側で弾いた場合の文言（src/lib/rate-limit.ts）。
+  // 原因を取り違えて旬すぐ側を疑わせないよう、Google Tasks の同名ラベルとも文面を分ける。
+  'rate-limited': 'リクエストが多すぎます。しばらく待ってから再試行してください',
   'unexpected-response': '旬すぐ側の応答が想定外の形式でした',
   'network-error': '旬すぐ側に接続できませんでした',
   'internal-error': 'サーバ内部でエラーが発生しました',

@@ -1,11 +1,12 @@
 import { ChanceFetchError, fetchChanceResult } from '@/lib/shunsugu/client';
 import { isValidChanceParam } from '@/lib/shunsugu/parse';
+import { clientKeyFromHeaders, consumeRateLimit } from '@/lib/rate-limit';
 
 // このハンドラは1リクエスト＝1件のみを処理する。複数件の直列化・間隔制御・進捗表示は
 // クライアント側の責務であり、ここでは行わない。
 //
-// 段階公開の間は自分だけが叩く前提のためレート制限を設けていないが、
-// 一般公開に切り替える際はサーバ側レート制限が必須（.claude/context/current-sprint.md 参照）。
+// クライアント側の直列化はブラウザのコードなので、ここを直接叩かれた場合の歯止めにならない。
+// そのためIPごとのレート制限を入れてある（限界は src/lib/rate-limit.ts のコメントを参照）。
 
 // Set-Cookie の複数値取得（getSetCookie）と Cookie 転送を伴う fetch 代行を行うため、
 // Edge ランタイムではなく Node ランタイムを明示する。
@@ -32,6 +33,16 @@ function isChanceRequestBody(value: unknown): value is ChanceRequestBody {
 }
 
 export async function POST(request: Request): Promise<Response> {
+  // 上流への代行取得どころかボディの解析より前に弾く。旬すぐ側への負荷を減らすのが目的で、
+  // 入力が正しいかどうかは判定に関係ない。
+  const verdict = consumeRateLimit(clientKeyFromHeaders(request.headers));
+  if (!verdict.allowed) {
+    return Response.json(
+      { error: 'rate-limited' },
+      { status: 429, headers: { 'Retry-After': String(verdict.retryAfterSeconds) } },
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();

@@ -48,6 +48,8 @@ function errorKindFromStatus(status: number): string {
   switch (status) {
     case 400:
       return 'invalid-input';
+    case 429:
+      return 'rate-limited';
     case 504:
       return 'timeout';
     default:
