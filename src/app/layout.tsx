@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Caprasimo, Figtree } from 'next/font/google';
+import { siteConfig } from '@/lib/site-config';
 import './globals.css';
 
 const figtree = Figtree({
@@ -14,9 +15,34 @@ const caprasimo = Caprasimo({
   subsets: ['latin'],
 });
 
+const DESCRIPTION = '旬すぐのパッケージQRからクーポンコードをまとめて取り出す非公式ツールです。';
+
 export const metadata: Metadata = {
+  // metadataBase が無いと canonical と OGP の URL が相対のままになり、
+  // クローラやSNS側で解決できない。
+  metadataBase: new URL(siteConfig.siteUrl),
   title: '旬パス',
-  description: '旬すぐのパッケージQRからクーポンコードをまとめて取り出す非公式ツールです。',
+  description: DESCRIPTION,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    siteName: '旬パス',
+    locale: 'ja_JP',
+    url: '/',
+    title: '旬パス',
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '旬パス',
+    description: DESCRIPTION,
+  },
+  // Search Console の所有権確認（HTMLタグ方式）。未設定なら meta ごと出ない。
+  verification: siteConfig.googleSiteVerification
+    ? { google: siteConfig.googleSiteVerification }
+    : undefined,
 };
 
 // 下部固定バーの padding に env(safe-area-inset-bottom) を使うため、

@@ -15,16 +15,31 @@ function normalize(value: string | undefined): string | null {
   return trimmed === '' ? null : trimmed;
 }
 
+// 本番の公開URL。canonical / sitemap / OGP の絶対URLの基点になる。
+const DEFAULT_SITE_URL = 'https://shunpass.vercel.app';
+
+// siteUrl だけは他と違い null を許さない。metadataBase と sitemap は基点が無いと
+// 成立せず、「未設定なら描画しない」で逃げられないため既定値に倒す。
+// 末尾スラッシュを落としておかないと sitemap の URL が二重スラッシュになる。
+function normalizeSiteUrl(value: string | undefined): string {
+  const normalized = normalize(value);
+  return normalized === null ? DEFAULT_SITE_URL : normalized.replace(/\/+$/, '');
+}
+
 export type SiteConfig = {
+  siteUrl: string;
   contactEmail: string | null;
   contactUrl: string | null;
   repositoryUrl: string | null;
   developerUrl: string | null;
+  googleSiteVerification: string | null;
 };
 
 export const siteConfig: SiteConfig = {
+  siteUrl: normalizeSiteUrl(process.env.NEXT_PUBLIC_SHUNPASS_SITE_URL),
   contactEmail: normalize(process.env.NEXT_PUBLIC_SHUNPASS_CONTACT_EMAIL),
   contactUrl: normalize(process.env.NEXT_PUBLIC_SHUNPASS_CONTACT_URL),
   repositoryUrl: normalize(process.env.NEXT_PUBLIC_SHUNPASS_REPOSITORY_URL),
   developerUrl: normalize(process.env.NEXT_PUBLIC_SHUNPASS_DEVELOPER_URL),
+  googleSiteVerification: normalize(process.env.NEXT_PUBLIC_SHUNPASS_GOOGLE_SITE_VERIFICATION),
 };

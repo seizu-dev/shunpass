@@ -5,10 +5,28 @@ import { siteConfig } from '@/lib/site-config';
 // Server Component として描画する。連絡先とリポジトリURLは NEXT_PUBLIC_* のビルド時
 // 埋め込みで足り、状態も副作用も持たないため 'use client' は付けない。
 
+const DESCRIPTION =
+  '旬パスが何をするツールか、どのデータがサーバーを経由するか、免責事項をまとめたページです。';
+
 export const metadata: Metadata = {
   title: '旬パスについて',
-  description:
-    '旬パスが何をするツールか、どのデータがサーバーを経由するか、免責事項をまとめたページです。',
+  description: DESCRIPTION,
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    type: 'article',
+    siteName: '旬パス',
+    locale: 'ja_JP',
+    url: '/about',
+    title: '旬パスについて',
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '旬パスについて',
+    description: DESCRIPTION,
+  },
 };
 
 const SECTION_CLASS = 'flex flex-col gap-3';

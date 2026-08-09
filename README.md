@@ -83,15 +83,17 @@ LAN の IP 直アクセスでは Google Tasks 連携を実機確認できない�
 `.env.local.example` をコピーして `.env.local` を作成します。**すべて任意** で、
 未設定でも基本機能（スキャンと結果表示、クリップボードへのコピー）は動作します。
 
-| 変数                                  | 用途                                                                          |
-| ------------------------------------- | ----------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_GOOGLE_CLIENT_ID`        | Google Tasks 連携の OAuth クライアントID。未設定なら関連UIを描画しない        |
-| `NEXT_PUBLIC_SHUNPASS_CONTACT_EMAIL`  | `/about` に表示する連絡先メール。未設定なら非表示                             |
-| `NEXT_PUBLIC_SHUNPASS_CONTACT_URL`    | `/about` に表示する連絡先URL（SNSプロフィール等）。未設定なら非表示           |
-| `NEXT_PUBLIC_SHUNPASS_REPOSITORY_URL` | `/about` に表示するソースコードの公開先。未設定なら非表示                     |
-| `NEXT_PUBLIC_SHUNPASS_DEVELOPER_URL`  | フッターと `/about` に表示する開発者サイト。未設定なら非表示                  |
-| `SHUNPASS_ENABLE_UPDATE_STATUS`       | 当たり検出時の開封処理を有効化する。**未検証のため既定 `false` のまま**       |
-| `SHUNPASS_DEV_ORIGINS`                | `next dev` が `/_next/*` を許可するホスト。既定は `192.168.*.*` と `10.*.*.*` |
+| 変数                                            | 用途                                                                          |
+| ----------------------------------------------- | ----------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SHUNPASS_SITE_URL`                 | canonical / sitemap / OGP の基点URL。未設定なら `https://shunpass.vercel.app` |
+| `NEXT_PUBLIC_SHUNPASS_GOOGLE_SITE_VERIFICATION` | Search Console の所有権確認タグの値。未設定なら meta ごと出力しない           |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID`                  | Google Tasks 連携の OAuth クライアントID。未設定なら関連UIを描画しない        |
+| `NEXT_PUBLIC_SHUNPASS_CONTACT_EMAIL`            | `/about` に表示する連絡先メール。未設定なら非表示                             |
+| `NEXT_PUBLIC_SHUNPASS_CONTACT_URL`              | `/about` に表示する連絡先URL（SNSプロフィール等）。未設定なら非表示           |
+| `NEXT_PUBLIC_SHUNPASS_REPOSITORY_URL`           | `/about` に表示するソースコードの公開先。未設定なら非表示                     |
+| `NEXT_PUBLIC_SHUNPASS_DEVELOPER_URL`            | フッターと `/about` に表示する開発者サイト。未設定なら非表示                  |
+| `SHUNPASS_ENABLE_UPDATE_STATUS`                 | 当たり検出時の開封処理を有効化する。**未検証のため既定 `false` のまま**       |
+| `SHUNPASS_DEV_ORIGINS`                          | `next dev` が `/_next/*` を許可するホスト。既定は `192.168.*.*` と `10.*.*.*` |
 
 `NEXT_PUBLIC_*` はビルド時に静的置換されるため、変更したら dev サーバーの再起動
 （本番はビルドし直し）が必要です。
