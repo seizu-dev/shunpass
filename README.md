@@ -105,11 +105,17 @@ npx tsc --noEmit
 npm run lint
 npm run build        # dev サーバーを止めてから実行すること
 npm run sync-wasm    # zxing-wasm を更新したときに .wasm を入れ替える
+npm run gen-site-qr  # サイトURLのQRコード（public/site-url-qr.svg）を作り直す
 ```
 
 `npm run build` は dev サーバーと `.next` を共有するため、起動したまま実行すると
 Turbopack の状態が壊れます。壊れた場合は dev サーバーを落とし、`.next` を削除してから
 起動し直すと復旧します。
+
+カメラ停止中の枠には、PC（マウス操作の環境）でのみサイトURLのQRコードを表示します。
+生成物をコミットしているため、**`NEXT_PUBLIC_SHUNPASS_SITE_URL` を変えたら
+`npm run gen-site-qr` を実行し直してください**（ずれても型チェックやビルドでは検出できません）。
+別のURLで作る場合は `npm run gen-site-qr -- https://example.com` のように引数で渡します。
 
 ## 技術構成
 

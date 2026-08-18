@@ -11,6 +11,7 @@ import {
   type ScanFailureReason,
 } from '@/lib/scan/qr-detector';
 import { parseChanceUrl } from '@/lib/shunsugu/parse';
+import { siteConfig } from '@/lib/site-config';
 import { describeParseFailure, describeScanFailure } from '@/lib/ui-messages';
 
 type ScannerProps = {
@@ -33,6 +34,9 @@ const SCAN_COOLDOWN_MS = 2000;
 const MAX_CONSECUTIVE_DETECT_FAILURES = 5;
 
 const FEEDBACK_DURATION_MS = 2500;
+
+// カメラ停止中の枠に出す「スマホで開く」の表示用。スキームは冗長なので落とす。
+const SITE_URL_LABEL = siteConfig.siteUrl.replace(/^https?:\/\//, '');
 
 type ScanPhase = 'idle' | 'starting' | 'scanning';
 
@@ -327,8 +331,29 @@ export default function Scanner({ isRunning, knownSerials, onSubmit, onAbort }: 
             <div className="aspect-square w-[58%] rounded-[24px] border-[3px] border-bg/80" />
           </div>
         ) : (
-          <div className="absolute inset-0 grid place-items-center px-6 text-center text-[13px] leading-relaxed text-bg/70">
-            下の「カメラ起動」でQRの読み取りを始めます
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-[18px] px-6 text-center text-[13px] leading-relaxed text-bg/70">
+            <p>下の「カメラ起動」でQRの読み取りを始めます</p>
+
+            {/* PCで見ている人にスマホへ移ってもらうための導線。スマホでは自分の画面のQRを
+                読めないので出さない。pointer-fine（マウス等の精密なポインタ）はCSSだけの
+                判定なので、UA判定と違ってハイドレーション不一致が起きない。 */}
+            <div className="hidden flex-col items-center gap-[10px] pointer-fine:flex">
+              {/* 静的な小さいSVGで、next/image の最適化対象にする意味がない。 */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/site-url-qr.svg"
+                alt="旬パスのURLのQRコード"
+                width={156}
+                height={156}
+                className="rounded-[10px] bg-white p-2"
+              />
+              <div>
+                <div className="text-[13px] font-semibold text-bg/85">スマホで開く</div>
+                {/* URLは静的SVGではなく siteConfig から描く。QRの中身とずれたときに
+                    画面上で気づけるようにするため（静的チェックでは検出できない）。 */}
+                <div className="mt-0.5 font-mono text-[12px] text-bg/60">{SITE_URL_LABEL}</div>
+              </div>
+            </div>
           </div>
         )}
 

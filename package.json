@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "sync-wasm": "node scripts/sync-zxing-wasm.mjs"
+    "sync-wasm": "node scripts/sync-zxing-wasm.mjs",
+    "gen-site-qr": "node scripts/generate-site-qr.mjs"
   },
   "dependencies": {
     "barcode-detector": "^3.2.1",
