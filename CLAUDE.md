@@ -21,5 +21,5 @@
 - FW: **Next.js 16.2**（App Router / Turbopack）/ React 19.2
 - CSS: Tailwind CSS v4（`@tailwindcss/postcss`）
 - DB: なし（ステートレス。永続化が必要になったらここを更新する）
-- ホスティング: Vercel（GitHub連携は未接続。更新は手動 `npx vercel --prod`）
+- ホスティング: Vercel（GitHub連携済み。`main` への push で本番へ自動デプロイ）
 - 対象外部API: `shunsugu.jp` の `/chance/*.json`（非公開・無保証）
