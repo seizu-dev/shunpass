@@ -15,7 +15,7 @@ const caprasimo = Caprasimo({
   subsets: ['latin'],
 });
 
-const DESCRIPTION = '冷凍食品ブランド「旬すぐ」のパッケージQRからクーポンコードをまとめて取り出す非公式ツールです。';
+const DESCRIPTION = '冷凍食品ブランド「旬をすぐに」のパッケージQRからクーポンコードをまとめて取り出す非公式ツールです。';
 
 export const metadata: Metadata = {
   // metadataBase が無いと canonical と OGP の URL が相対のままになり、
