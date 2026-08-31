@@ -15,15 +15,23 @@ function normalize(value: string | undefined): string | null {
   return trimmed === '' ? null : trimmed;
 }
 
-// 本番の公開URL。canonical / sitemap / OGP の絶対URLの基点になる。
-const DEFAULT_SITE_URL = 'https://seizu.dev/shunpass';
-
 // siteUrl だけは他と違い null を許さない。metadataBase と sitemap は基点が無いと
-// 成立せず、「未設定なら描画しない」で逃げられないため既定値に倒す。
+// 成立せず、「未設定なら描画しない」で逃げられないため必須にしている。
+// 以前は既定値へのフォールバックだったが、既定値が本ファイルと
+// scripts/generate-site-qr.mjs の2箇所に重複し、片方だけ直すと
+// canonical / sitemap / 同梱QR が静かにずれる問題があった（tsc / lint / build の
+// どれも検出できない）。既定値そのものを無くし、必須の環境変数にすることで
+// 二重管理と「静かにずれる」問題を根本から解消した。
 // 末尾スラッシュを落としておかないと sitemap の URL が二重スラッシュになる。
 function normalizeSiteUrl(value: string | undefined): string {
   const normalized = normalize(value);
-  return normalized === null ? DEFAULT_SITE_URL : normalized.replace(/\/+$/, '');
+  if (normalized === null) {
+    throw new Error(
+      'NEXT_PUBLIC_SHUNPASS_SITE_URL が未設定です。' +
+        'ローカルでは .env.local に、Vercel では環境変数に設定してください（例: https://example.com/shunpass）。',
+    );
+  }
+  return normalized.replace(/\/+$/, '');
 }
 
 export type SiteConfig = {

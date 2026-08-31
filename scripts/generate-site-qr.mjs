@@ -14,12 +14,18 @@ import { prepareZXingModule, writeBarcode } from 'zxing-wasm/writer';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-// src/lib/site-config.ts の DEFAULT_SITE_URL と揃えること。
-// .mjs から TS を読めないため重複するが、参照先だけは明示しておく。
-const DEFAULT_SITE_URL = 'https://seizu.dev/shunpass';
-
-// .env.local はこのスクリプトでは読まれない。別のURLで生成したいときは引数で渡す。
-const url = process.argv[2] ?? process.env.NEXT_PUBLIC_SHUNPASS_SITE_URL ?? DEFAULT_SITE_URL;
+// `npm run gen-site-qr` は package.json 側で `--env-file-if-exists=.env.local` を付けて
+// 実行するため、.env.local の NEXT_PUBLIC_SHUNPASS_SITE_URL がここでも読める。
+// 別のURLで生成したいときは引数で渡す（引数が環境変数より優先）。
+const url = process.argv[2] ?? process.env.NEXT_PUBLIC_SHUNPASS_SITE_URL;
+if (url === undefined) {
+  process.stderr.write(
+    'URL を指定してください。' +
+      '`npm run gen-site-qr -- https://example.com/shunpass` のように引数で渡すか、' +
+      '.env.local に NEXT_PUBLIC_SHUNPASS_SITE_URL を設定してください。\n',
+  );
+  process.exit(1);
+}
 
 // zxing-wasm は既定で .wasm を jsDelivr CDN から取りに行く。オフラインでも生成できるよう
 // node_modules の実体を読んで渡す（qr-detector.ts で locateFile を差し替えているのと同じ理由）。
