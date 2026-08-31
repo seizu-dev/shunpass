@@ -21,5 +21,7 @@
 - FW: **Next.js 16.2**（App Router / Turbopack）/ React 19.2
 - CSS: Tailwind CSS v4（`@tailwindcss/postcss`）
 - DB: なし（ステートレス。永続化が必要になったらここを更新する）
-- ホスティング: Vercel（GitHub連携済み。`main` への push で本番へ自動デプロイ）
+- ホスティング: Vercel（GitHub連携済み。`main` への push で本番へ自動デプロイ）。
+  公開URLは `https://seizu.dev/shunpass`。自前ドメイン `seizu.dev`（Cloudflare Tunnel
+  経由でホストしている既存サイト）の下層に、Next.js の `basePath` でぶら下げている
 - 対象外部API: `shunsugu.jp` の `/chance/*.json`（非公開・無保証）
