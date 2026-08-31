@@ -1,3 +1,4 @@
+import { withBasePath } from '@/lib/base-path';
 import { siteConfig } from '@/lib/site-config';
 
 // Server Component。連絡先と同じ「未設定なら描画しない」パターンで、状態も副作用も持たない。
@@ -28,7 +29,7 @@ export default function SiteFooter() {
       )}
       <a
         className="text-accent-900 underline underline-offset-2"
-        href="/about"
+        href={withBasePath('/about')}
         target="_blank"
         rel="noopener noreferrer"
       >

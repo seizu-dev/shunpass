@@ -1,4 +1,5 @@
 import type { ChanceResult } from '@/lib/shunsugu/types';
+import { withBasePath } from '@/lib/base-path';
 
 export type ChanceApiResult = { ok: true; value: ChanceResult } | { ok: false; errorKind: string };
 
@@ -78,7 +79,7 @@ export async function requestChance(
 ): Promise<ChanceApiResult> {
   let res: Response;
   try {
-    res = await fetch('/api/chance', {
+    res = await fetch(withBasePath('/api/chance'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(input),

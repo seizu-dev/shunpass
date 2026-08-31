@@ -73,6 +73,20 @@ export function consumeRateLimit(key: string, now: number = Date.now()): RateLim
  * リクエストヘッダからレート制限のキー（クライアントIP）を取り出す。
  */
 export function clientKeyFromHeaders(headers: Headers): string {
+  // seizu.dev/shunpass 経由（Cloudflare Tunnel）だと、Vercel から見た接続元は
+  // cloudflared を動かすホストのIP1つに集約され、x-vercel-forwarded-for を使うと
+  // 利用者全員が同一バケットを共有してしまう。cf-connecting-ip はトンネルの手前で
+  // Cloudflare が付与する実接続元なので最優先にする。
+  //
+  // shunpass.vercel.app を直接叩けば cf-connecting-ip を自称できてしまうが、
+  // このレート制限はもともと「無制限を潰す緩和策であって上限の保証ではない」
+  // （ファイル冒頭のコメント参照）ため、秘密ヘッダによる検証までは行わない
+  // （ユーザーが明示的に選んだトレードオフ）。
+  const cfConnectingIp = headers.get('cf-connecting-ip');
+  if (cfConnectingIp !== null && cfConnectingIp.trim() !== '') {
+    return cfConnectingIp.trim();
+  }
+
   // x-forwarded-for は最前段のプロキシより手前で任意の値を差し込めるため、
   // ホスティング側が付与するヘッダを優先する。
   const trusted = headers.get('x-vercel-forwarded-for') ?? headers.get('x-real-ip');

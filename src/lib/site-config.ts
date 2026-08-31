@@ -16,7 +16,7 @@ function normalize(value: string | undefined): string | null {
 }
 
 // 本番の公開URL。canonical / sitemap / OGP の絶対URLの基点になる。
-const DEFAULT_SITE_URL = 'https://shunpass.vercel.app';
+const DEFAULT_SITE_URL = 'https://seizu.dev/shunpass';
 
 // siteUrl だけは他と違い null を許さない。metadataBase と sitemap は基点が無いと
 // 成立せず、「未設定なら描画しない」で逃げられないため既定値に倒す。

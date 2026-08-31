@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { withBasePath } from '@/lib/base-path';
 import { parseChanceUrls } from '@/lib/shunsugu/parse';
 import { describeParseFailure } from '@/lib/ui-messages';
 
@@ -55,7 +56,7 @@ export default function UrlPasteInput({ isRunning, onSubmit, onAbort }: UrlPaste
         {/* 素の <a> を新規タブで開く。同一タブ遷移だと親の jobs state が消える。 */}
         <a
           className="text-accent-900 underline underline-offset-2"
-          href="/about"
+          href={withBasePath('/about')}
           target="_blank"
           rel="noopener noreferrer"
         >

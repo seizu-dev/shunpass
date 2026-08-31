@@ -19,6 +19,26 @@ const devOrigins =
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: devOrigins,
+
+  // Cloudflare Tunnel が seizu.dev/shunpass 配下をパスを剥がさずそのまま Vercel へ転送するため、
+  // Next.js 側もこのサブパスで応答する必要がある。src/lib/base-path.ts の BASE_PATH と対にすること。
+  basePath: '/shunpass',
+
+  async redirects() {
+    return [
+      {
+        // basePath はビルド時に埋め込まれ1ビルド1パスになるため、素の shunpass.vercel.app/ は
+        // 404になる。その逃げとして /shunpass へ流す。source 自体への basePath の前置を
+        // 避けるため basePath: false が要る（無いと source が /shunpass/ になってしまう）。
+        // seizu.dev/ は Cloudflare 側で既存サイトに向いており Vercel には到達しないため、
+        // この redirect の影響を受けない。
+        source: '/',
+        destination: '/shunpass',
+        permanent: false,
+        basePath: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { TrashIcon } from '@/components/Icons';
+import { withBasePath } from '@/lib/base-path';
 import { maskSerial } from '@/lib/mask';
 import {
   checkCameraEnvironment,
@@ -341,7 +342,7 @@ export default function Scanner({ isRunning, knownSerials, onSubmit, onAbort }: 
               {/* 静的な小さいSVGで、next/image の最適化対象にする意味がない。 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/site-url-qr.svg"
+                src={withBasePath('/site-url-qr.svg')}
                 alt="旬パスのURLのQRコード"
                 width={156}
                 height={156}
@@ -447,7 +448,7 @@ export default function Scanner({ isRunning, knownSerials, onSubmit, onAbort }: 
         {/* 素の <a> を新規タブで開く。同一タブ遷移だと親の jobs state が消える。 */}
         <a
           className="text-accent-900 underline underline-offset-2"
-          href="/about"
+          href={withBasePath('/about')}
           target="_blank"
           rel="noopener noreferrer"
         >

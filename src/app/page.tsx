@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { withBasePath } from '@/lib/base-path';
 import Scanner from '@/components/Scanner';
 import UrlPasteInput from '@/components/UrlPasteInput';
 import ResultTable from '@/components/ResultTable';
@@ -159,7 +160,7 @@ export default function Home() {
               React state にしか無いため全部消える。next/link を使わないのも同じ理由。 */}
           <a
             className="text-accent-900 underline underline-offset-2"
-            href="/about"
+            href={withBasePath('/about')}
             target="_blank"
             rel="noopener noreferrer"
           >

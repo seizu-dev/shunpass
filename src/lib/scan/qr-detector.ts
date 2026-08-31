@@ -1,3 +1,5 @@
+import { withBasePath } from '@/lib/base-path';
+
 export type ScanFailureReason =
   | 'insecure-context'
   | 'no-camera-api'
@@ -38,7 +40,7 @@ const QR_FORMAT = 'qr_code';
 // public/wasm/ に同梱したものを指すよう locateFile を差し替える。
 // ファイルは node_modules/zxing-wasm/dist/reader/zxing_reader.wasm のコピーで、
 // zxing-wasm を更新したときは `npm run sync-wasm` で入れ替える必要がある。
-const WASM_DIR_PATH = '/wasm/';
+const WASM_DIR_PATH = withBasePath('/wasm/');
 
 function getNativeConstructor(): NativeBarcodeDetectorConstructor | null {
   const candidate = (globalThis as { BarcodeDetector?: NativeBarcodeDetectorConstructor })

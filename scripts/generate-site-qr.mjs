@@ -16,7 +16,7 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // src/lib/site-config.ts の DEFAULT_SITE_URL と揃えること。
 // .mjs から TS を読めないため重複するが、参照先だけは明示しておく。
-const DEFAULT_SITE_URL = 'https://shunpass.vercel.app';
+const DEFAULT_SITE_URL = 'https://seizu.dev/shunpass';
 
 // .env.local はこのスクリプトでは読まれない。別のURLで生成したいときは引数で渡す。
 const url = process.argv[2] ?? process.env.NEXT_PUBLIC_SHUNPASS_SITE_URL ?? DEFAULT_SITE_URL;
