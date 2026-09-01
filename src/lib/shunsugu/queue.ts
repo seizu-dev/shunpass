@@ -1,8 +1,8 @@
 import { requestChance, type ChanceApiResult } from '@/lib/shunsugu/api-client';
 import type { ChanceResult } from '@/lib/shunsugu/types';
 
-// 旬すぐ側は個人運営規模のサービスで、1件につき HTML 取得（GET）+ 結果取得（POST）の
-// 2リクエストが発生する。並列化や間隔短縮は上流への負荷を無視した実装になるため、
+// 旬すぐ側には1件につき HTML 取得（GET）+ 結果取得（POST）の2リクエストが発生する。
+// 並列化や間隔短縮は上流への負荷を無視した実装になるため、
 // 直列実行と間隔は UI から上書きできない定数としてここに固定する
 // （.claude/architecture.md「禁止パターン」参照）。
 export const CHANCE_REQUEST_INTERVAL_MS = 1500;

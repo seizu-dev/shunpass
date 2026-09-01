@@ -9,7 +9,7 @@ const UPDATE_STATUS_URL = 'https://shunsugu.jp/chance/update_status.json';
 const USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
-// 個人運営規模の上流に配慮し、1件あたりの待ち時間が極端に伸びないよう上限を設ける。
+// 上流への負荷に配慮し、1件あたりの待ち時間が極端に伸びないよう上限を設ける。
 const REQUEST_TIMEOUT_MS = 10_000;
 
 // Rails の csrf_meta_tags は `name` → `content` の順・ダブルクォートで出力するが、
